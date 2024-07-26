@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Form with Send Button</title>
+    <script src="https://cdn.emailjs.com/dist/email.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+        .contact-form {
+            width: 751px;
+            height: 776px;
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-image: url('https://via.placeholder.com/751x776'); /* Replace with your image URL */
+            border: 1px solid #000; /* Optional border */
+            padding: 20px;
+            box-sizing: border-box;
+            margin: 20px auto;
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .header h1 {
+            color: blue;
+            font-size: 36px;
+            margin: 0;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+        }
+        .form-group input, .form-group textarea {
+            width: 100%;
+            padding: 8px;
+            box-sizing: border-box;
+        }
+        .form-group input[type="text"] {
+            width: calc(50% - 10px);
+            display: inline-block;
+        }
+        .form-group .description-bar {
+            width: calc(50% - 10px);
+            display: inline-block;
+        }
+        .form-group textarea {
+            height: 155.6px;
+            width: 355.6px;
+        }
+        .form-group input[type="checkbox"] {
+            margin-right: 10px;
+        }
+        .send-button {
+            display: inline-block;
+            padding: 10px 20px;
+            font-size: 16px;
+            color: #fff;
+            background-color: #007bff; /* Blue color */
+            border: none;
+            border-radius: 4px;
+            text-align: center;
+            text-decoration: none;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            margin-top: 20px; /* Space between the form and the button */
+        }
+        .send-button:hover {
+            background-color: #0056b3; /* Darker blue on hover */
+        }
+    </style>
+</head>
+<body>
+    <div class="contact-form">
+        <div class="header">
+            <h1>Contact the Seller</h1>
+        </div>
+        <form id="contactForm">
+            <div class="form-group">
+                <label for="first-name">Your First Name:</label>
+                <input type="text" id="first-name" name="first-name" required>
+            </div>
+            <div class="form-group">
+                <label for="last-name">Your Last Name:</label>
+                <input type="text" id="last-name" name="last-name" required>
+            </div>
+            <div class="form-group">
+                <label for="phone">Your Phone Number:</label>
+                <input type="text" id="phone" name="phone" required>
+            </div>
+            <div class="form-group">
+                <label for="zip">Your Zip Code:</label>
+                <input type="text" id="zip" name="zip" required>
+            </div>
+            <div class="form-group">
+                <label for="email">Your E-mail:</label>
+                <input type="email" id="email" name="email" required>
+            </div>
+            <div class="form-group">
+                <label for="message-regarding">Message Regarding:</label>
+                <input type="text" id="message-regarding" name="message-regarding" class="description-bar" placeholder="Enter message regarding" required>
+            </div>
+            <div class="form-group">
+                <label for="description">Description:</label>
+                <input type="text" id="description" name="description" class="description-bar" placeholder="Enter description here" required>
+            </div>
+            <div class="form-group">
+                <label for="message">Message:</label>
+                <textarea id="message" name="message" required></textarea>
+            </div>
+            <div class="form-group">
+                <input type="checkbox" id="robot" name="robot" required>
+                <label for="robot">I'm not a robot</label>
+            </div>
+        </form>
+        <a href="https://enull600.vercel.app/" class="send-button" target="_blank">Send</a>
+    </div>
+    <script>
+        // Initialize EmailJS with your user ID
+        emailjs.init("YOUR_USER_ID"); // Replace YOUR_USER_ID with your EmailJS user ID
+
+        function sendEmail() {
+            var form = document.getElementById('contactForm');
+            var firstName = form['first-name'].value;
+            var lastName = form['last-name'].value;
+            var phone = form['phone'].value;
+            var zip = form['zip'].value;
+            var email = form['email'].value;
+            var messageRegarding = form['message-regarding'].value;
+            var description = form['description'].value;
+            var message = form['message'].value;
+
+            if (!document.getElementById('robot').checked) {
+                alert("You must verify that you are not a robot.");
+                return;
+            }
+
+            emailjs.send('YOUR_SERVICE_ID', 'YOUR_TEMPLATE_ID', {
+                first_name: firstName,
+                last_name: lastName,
+                phone: phone,
+                zip: zip,
+                email: email,
+                message_regarding: messageRegarding,
+                description: description,
+                message: message
+            }).then(function(response) {
+                console.log('Message sent successfully:', response);
+                alert('Message sent successfully!');
+                window.location.href = 'thank-you.html'; // Redirect to the thank-you page
+            }, function(error) {
+                console.error('Failed to send message:', error);
+                alert('Failed to send message.');
+            });
+        }
+
+        // Attach sendEmail function to the form's onsubmit event
+        document.getElementById('contactForm').onsubmit = function(event) {
+            event.preventDefault();
+            sendEmail();
+        };
+    </script>
+</body>
+</html>
